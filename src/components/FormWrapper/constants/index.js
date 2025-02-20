@@ -22,7 +22,7 @@ export const stepsConstant = [
         label: "E-mail",
         type: "email",
         required: true,
-        fullWidth: true,
+        fullWidth: false,
       },
     ],
     schema: Yup.object().shape({
