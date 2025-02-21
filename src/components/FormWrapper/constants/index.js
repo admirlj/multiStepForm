@@ -24,11 +24,24 @@ export const stepsConstant = [
         required: true,
         fullWidth: false,
       },
+      {
+        name: "phone",
+        label: "Phone",
+        type: "text",
+        required: true,
+        fullWidth: false,
+      },
     ],
     schema: Yup.object().shape({
       ["first-name"]: Yup.string().required().min(3),
       ["last-name"]: Yup.string().required().min(3),
       ["email"]: Yup.string().email().required(),
+      ["phone"]: Yup.string()
+        .matches(
+          /^(\+\d{1,2}\s?)?(\(?\d{3}\)?[\s.-]?)?\d{3}[\s.-]?\d{4}$/,
+          "Invalid phone number format"
+        )
+        .required(),
     }),
   },
   {

@@ -1,8 +1,9 @@
 import { Box, Button, Typography } from "@mui/material";
 import { useActionState, useMemo } from "react";
-import { cleanValues } from "../../utils";
+import { cleanValues, getInputsValue } from "../../utils";
 import { stepsConstant } from "./constants/index";
 import Generator from "./components/Generator/Generator";
+import HtmlLayout from "../HtmlLayout";
 
 export default function FormWrapper({
   activeStep,
@@ -36,31 +37,12 @@ export default function FormWrapper({
 
   const handleSubmit = async (prevState, formData) => {
     let errors = [];
-    if(activeStep === 2){
-      console.log('Send to API...')
-      handleNext();
-      return {
-        errors,
-        prevEnteredValues: {
-          ...formattedDefaultValues,
-        },
-      }
-    }
-    const valuesFromCurrentStep = stepsConstant[activeStep].inputs.reduce(
-      (prev, curr) => {
-        const value = formData.get(curr.name);
-        return {
-          ...prev,
-          [curr.name]: value,
-        };
-      },
-      {}
-    );
 
-    const data = {
-      stepName: stepsConstant[activeStep].name,
-      inputs: valuesFromCurrentStep,
-    };
+    const data = getInputsValue(
+      stepsConstant[activeStep].inputs,
+      stepsConstant[activeStep].name,
+      formData
+    );
 
     try {
       await stepsConstant[activeStep].schema.validate(data.inputs, {
@@ -107,6 +89,7 @@ export default function FormWrapper({
       {activeStep < stepsConstant.length && (
         <Generator defaultValues={prevEnteredValues} activeStep={activeStep} />
       )}
+
       {errors.length > 0
         ? errors.map((errorMessage) => (
             <Typography key={errorMessage} variant="body2" color="warning.main">
@@ -114,11 +97,13 @@ export default function FormWrapper({
             </Typography>
           ))
         : null}
-      {activeStep === steps.length ? (
+
+      {activeStep === stepsConstant.length ? (
         <>
           <Typography sx={{ mt: 2, mb: 1 }}>
             All steps completed - you&apos;re finished
           </Typography>
+          <HtmlLayout />
           <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
             <Box sx={{ flex: "1 1 auto" }} />
             <Button onClick={handleReset}>Reset</Button>
