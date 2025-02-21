@@ -6,6 +6,7 @@ import { stepsConstant } from "../FormWrapper/constants";
 export default function HtmlLayout() {
   const htmlNode = useRef();
   const [localData, setLocalData] = useState("");
+
   useEffect(() => {
     const local = stepsConstant.map((step) =>
       localStorage.getItem(step.name)
@@ -13,7 +14,7 @@ export default function HtmlLayout() {
         : undefined
     );
     setLocalData(local);
-  }, [setLocalData]);
+  }, []);
 
   const handleExportPdf = async () => {
     await html2PDF(htmlNode.current, {
@@ -24,7 +25,7 @@ export default function HtmlLayout() {
       output: "./pdf/generate.pdf",
     });
   };
-  console.log("localData",localData);
+  console.log("localData", localData);
   return (
     <Box>
       <Box id={"layoutHtml"} ref={htmlNode}>

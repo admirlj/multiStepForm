@@ -81,7 +81,6 @@ export default function HorizontalLinearStepper() {
 
       <FormWrapper
         activeStep={activeStep}
-        steps={steps}
         handleReset={handleReset}
         handleBack={handleBack}
         isStepOptional={isStepOptional}

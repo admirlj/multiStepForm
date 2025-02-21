@@ -7,7 +7,6 @@ import HtmlLayout from "../HtmlLayout";
 
 export default function FormWrapper({
   activeStep,
-  steps = [],
   handleReset,
   handleBack,
   isStepOptional,
